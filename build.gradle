@@ -1,0 +1,54 @@
+group 'RestAssured'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+
+
+dependencies {
+    compile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.3'
+    compile group: 'io.rest-assured', name: 'json-path', version: '3.0.3'
+    compile group: 'io.rest-assured', name: 'xml-path', version: '3.0.3'
+    compile group: 'io.rest-assured', name: 'json-schema-validator', version: '3.0.3'
+    compile group: 'io.rest-assured', name: 'spring-mock-mvc', version: '3.0.3'
+    compile group: 'io.rest-assured', name: 'scala-support', version: '3.0.3'
+
+    compile group: 'info.cukes', name: 'cucumber-java', version: '1.2.5'
+    compile group: 'info.cukes', name: 'cucumber-core', version: '1.2.5'
+    compile group: 'info.cukes', name: 'cucumber-junit', version: '1.2.5'
+    testCompile group: 'info.cukes', name: 'cucumber-picocontainer', version: '1.2.5'
+    compile group: 'info.cukes', name: 'cucumber-testng', version: '1.2.5'
+    compile group: 'junit', name: 'junit', version: '4.12'
+
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+}
+
+//task to run feature files
+test {
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
+}
+
+
+//task to run test classes inside services package
+task sampleTest(type: Test, dependsOn: testClasses) {
+    include '**/*services*'
+}
+tasks.withType(Test) {
+    testLogging {
+        events 'started', 'passed', 'failed'
+    }
+}

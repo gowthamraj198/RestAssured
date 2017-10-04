@@ -5,9 +5,9 @@ Feature: Get city details
     When a user retrieves the detials of a city by its name
     Then the status code is 200
     And response includes the following
-      | City                    | Chennai           |
-      | Temperature             | 34 Degree celsius |
-      | Humidity                | 63 Percent        |
-      | "Weather Description"   | haze              |
-      | "Wind Speed"            | 3.6 Km per hour   |
-      | "Wind Direction degree" | 280 Degree        |
+      | City                    | Chennai                                   |
+      | Temperature             | 27 Degree celsius                         |
+      | Humidity                | 88 Percent                                |
+      | "Weather Description"   | thunderstorm with light rain              |
+      | "Wind Speed"            | 2.1 Km per hour                           |
+      | "Wind Direction degree" | 50 Degree                                 |

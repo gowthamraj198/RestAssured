@@ -5,6 +5,7 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.ResponseSpecification;
 import org.junit.Test;
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
 
 import org.apache.http.HttpStatus;
@@ -87,5 +88,27 @@ public class CircuitTest {
                         body("MRData.CircuitTable.Circuits.Location.country",contains("Australia"));
 
 
+    }
+
+    //json & response validation
+    @Test
+    public void validateJSONWithResponse()
+    {
+        String circuitId =
+                given().
+                        pathParam("season",2017).
+                        when().
+                        get(ENDPOINT+ ".json").
+                        then().
+                        extract().
+                        path("MRData.CircuitTable.Circuits.circuitId[0]");
+        given().
+                pathParam("season",2017).
+                when().
+                get(ENDPOINT + "/" + circuitId + ".json").
+                then().
+                assertThat().
+                body(matchesJsonSchemaInClasspath("albert_park_Australia.json")).
+                body("MRData.CircuitTable.Circuits.Location.country",contains("Australia"));
     }
 }

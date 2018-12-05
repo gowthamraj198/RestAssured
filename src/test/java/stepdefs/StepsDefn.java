@@ -69,3 +69,75 @@ public class StepsDefn {
 }
 
 
+
+
+import org.json.JSONObject;
+import org.json.XML;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
+
+class TestClass1 {
+
+    public static void main(String[] args)
+    {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask()
+        {
+            public void run()
+            {
+                String output = "abc";
+                String output1 = "";
+                final int PRETTY_PRINT_INDENT_FACTOR = 4;
+                String jsonPrettyPrintString="";
+                try {
+
+                    URL url = new URL("https://timesofindia.indiatimes.com/rssfeedstopstories.cms");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setRequestProperty("Accept", "application/json");
+
+                    if (conn.getResponseCode() != 200) {
+
+                        throw new RuntimeException("Failed : HTTP error code : "
+                                + conn.getResponseCode());
+                    }
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader(
+                            (conn.getInputStream())));
+
+
+                    //String output;
+                    System.out.println("Output from Server .... \n");
+                    while ((output = br.readLine()) != null) {
+                        output1=output1+output;
+                    }
+
+                    conn.disconnect();
+
+                    JSONObject xmlJSONObj = XML.toJSONObject(output1.toString());
+                    jsonPrettyPrintString = xmlJSONObj.toString(PRETTY_PRINT_INDENT_FACTOR);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                JSONObject json;
+                try {
+                    json = XML.toJSONObject(output1.toString());
+                    System.out.println("title");
+                    System.out.println(json.getJSONObject("rss").getJSONObject("channel").getJSONArray("item").getJSONObject(0).getString("title"));
+
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+
+        }, 0, 3000);
+    }
+}
+

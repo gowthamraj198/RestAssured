@@ -71,6 +71,7 @@ public class StepsDefn {
 
 
 
+
 import org.json.JSONObject;
 import org.json.XML;
 
@@ -128,8 +129,12 @@ class TestClass1 {
                 JSONObject json;
                 try {
                     json = XML.toJSONObject(output1.toString());
-                    System.out.println("title");
-                    System.out.println(json.getJSONObject("rss").getJSONObject("channel").getJSONArray("item").getJSONObject(0).getString("title"));
+                    int size=json.getJSONObject("rss").getJSONObject("channel").getJSONArray("item").length();
+                    for (int i=0;i<size;i++) {
+                        System.out.println("Title : " +json.getJSONObject("rss").getJSONObject("channel").getJSONArray("item").getJSONObject(i).getString("title"));
+                        System.out.println("Description : " +json.getJSONObject("rss").getJSONObject("channel").getJSONArray("item").getJSONObject(i).getString("description"));
+                        System.out.println("Published Date : " +json.getJSONObject("rss").getJSONObject("channel").getJSONArray("item").getJSONObject(i).getString("pubDate"));
+                    }
 
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
@@ -140,4 +145,3 @@ class TestClass1 {
         }, 0, 3000);
     }
 }
-

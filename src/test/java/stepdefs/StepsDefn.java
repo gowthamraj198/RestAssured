@@ -67,3 +67,48 @@ public class StepsDefn {
     }
 
 }
+
+
+
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+class TestClass {
+
+    public static void main(String[] args)
+    {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask()
+        {
+            public void run()
+            {
+                HttpClient client = new DefaultHttpClient();
+                HttpGet httpGet = new HttpGet("https://timesofindia.indiatimes.com/rssfeedstopstories.cms");
+
+                //add your headers if needed like this
+                httpGet.setHeader("Content-type", "application/xml");
+                httpGet.setHeader("Accept", "application/xml");
+                try{
+                    HttpResponse response = client.execute(httpGet);
+                    HttpEntity httpEntity = response.getEntity();
+                
+                    //get response as String or what ever way you need
+                    String response1 = EntityUtils.toString(httpEntity);
+                }
+                catch(Exception e)
+                {
+                
+                }
+            }
+
+        }, 0, 3000);
+    }
+ }
